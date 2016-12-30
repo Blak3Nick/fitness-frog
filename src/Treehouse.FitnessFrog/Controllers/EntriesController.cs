@@ -104,15 +104,30 @@ namespace Treehouse.FitnessFrog.Controllers
             SetupActivitiesSelectListItems();
             return View(entry);
         }
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            //TODO delete the entry
+            _entriesRepository.DeleteEntry(id);
 
+            //REdirect to the list page
+            return RedirectToAction("Index");
+        }
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //TODO retrieve entry for the provided id parameter, return not found if not
+            Entry entry = _entriesRepository.GetEntry((int)id);
+            if (entry == null)
+            {
+                return HttpNotFound();
+            }
+            //Pass the entry to the view
 
-            return View();
+            return View(entry);
         }
     }
 }
